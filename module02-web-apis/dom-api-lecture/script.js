@@ -61,9 +61,14 @@ h1.className = "text-4xl font-bold text-blue-600 mb-4 text-center";
 h1.classList.remove("text-blue-600");
 h1.classList.add("text-green-500");
 h1.classList.add("underline");
-// You can also toggle classes: h1.classList.toggle("underline");
 
-// 5.4 Simple button click example
+// 5.4 Changing Styles with Vanilla CSS
+// Directly modifying inline styles using .style property
+h1.style.color = "red";
+h1.style.backgroundColor = "yellow";
+h1.style.fontSize = "20px";
+
+// 5.5 Simple button click example
 // When the button is clicked, change its text and add a new class
 clickButton.addEventListener("click", () => {
   // Change the button text
