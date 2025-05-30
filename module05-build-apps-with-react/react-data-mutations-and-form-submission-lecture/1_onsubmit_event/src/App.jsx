@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./index.css";
 import { sleep, validate } from "./utils/validation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /**
  * Main App component that renders a contact form with validation and submission handling.
@@ -11,12 +13,38 @@ import { sleep, validate } from "./utils/validation";
  * - Form submission with simulated API call
  */
 const App = () => {
+
   // State for form data with initial empty values
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+
+  // Toast configuration
+  const showSuccessToast = (message) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const showErrorToast = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   // Loading state to handle form submission state
   const [loading, setLoading] = useState(false);
@@ -50,6 +78,15 @@ const App = () => {
     // Check if there are any validation errors
     const hasNoErrors = Object.keys(validationErrors).length === 0;
 
+    if (!hasNoErrors) {
+      // Show validation errors
+      Object.values(validationErrors).forEach(error => {
+        showErrorToast(error);
+      });
+      setLoading(false);
+      return;
+    }
+
     if (hasNoErrors) {
       try {
         // Simulate API call with a 2-second delay
@@ -59,7 +96,7 @@ const App = () => {
         console.log("Form submitted with data:", formData);
 
         // Show success message
-        alert("Form submitted successfully!");
+        showSuccessToast("Message sent successfully!");
 
         // Reset form on successful submission
         setFormData({
@@ -70,7 +107,7 @@ const App = () => {
       } catch (error) {
         // Handle any errors during form submission
         console.error("Error submitting form:", error);
-        alert("An error occurred while submitting the form. Please try again.");
+        showErrorToast("Failed to send message. Please try again later.");
       }
     }
 
@@ -79,7 +116,20 @@ const App = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8 font-sans">
+    <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <main className="min-h-screen bg-gray-100 p-8 font-sans">
       <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Contact Us
@@ -151,6 +201,7 @@ const App = () => {
         </form>
       </div>
     </main>
+    </div>
   );
 };
 
