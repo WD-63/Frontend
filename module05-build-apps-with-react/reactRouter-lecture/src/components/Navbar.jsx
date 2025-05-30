@@ -1,6 +1,10 @@
 import { Link } from "react-router";
 
-const Navbar = () => {
+const Navbar = ({ signedIn, setSignedIn }) => {
+  const handleAuthClick = () => {
+    setSignedIn((prev) => !prev);
+  };
+
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -38,6 +42,16 @@ const Navbar = () => {
               Users
             </Link>
           </li>
+          <button
+            onClick={handleAuthClick}
+            className={`px-4 py-2 rounded ${
+              signedIn
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-green-500 hover:bg-green-600"
+            } transition duration-300`}
+          >
+            {signedIn ? "Sign Out" : "Sign In"}
+          </button>
         </ul>
       </div>
     </nav>
